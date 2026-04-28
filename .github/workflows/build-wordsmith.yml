@@ -25,5 +25,12 @@ jobs:
 
       - name: Build, Tag and Push
         run : |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/wordsmith:${{matrix.service }} ./${{ matrix.service}}
-          docker push ${{ secrets.DOCKER_USERNAME }}/wordsmith:${{ matrix.service }}
+          docker build \
+            -t ${{ secrets.DOCKER_USERNAME }}/wordsmith:${{ matrix.service }}-latest \
+            -t ${{ secrets.DOCKER_USERNAME }}/wordsmith:${{ matrix.service }}-v1.0.0 \
+            -t ${{ secrets.DOCKER_USERNAME }}/wordsmith:${{ matrix.service }}-${{ github.sha }} \
+            ./${{ matrix.service }}
+            
+          docker push ${{ secrets.DOCKER_USERNAME }}/wordsmith:${{ matrix.service }}-latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/wordsmith:${{ matrix.service }}-v1.0.0
+          docker push ${{ secrets.DOCKER_USERNAME }}/wordsmith:${{ matrix.service }}-${{ github.sha }}
